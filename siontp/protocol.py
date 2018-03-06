@@ -33,6 +33,8 @@ import time
 import datetime
 
 
+_LSB16 = 2 ** 16
+_LSB32 = 2 ** 32
 _SYSTEM_EPOCH = datetime.date(*time.gmtime(0)[:3])
 _NTP_EPOCH = datetime.date(1900, 1, 1)
 DELTA = (_SYSTEM_EPOCH - _NTP_EPOCH).days * 24 * 3600
@@ -74,13 +76,13 @@ class Packet:
                 self.stratum,
                 self.poll_interval,
                 self.precision,
-                int(self.root_delay * 2 ** 16),
-                int(self.root_dispersion * 2 ** 16),
+                int(self.root_delay * _LSB16),
+                int(self.root_dispersion * _LSB16),
                 self.reference_clock_id,
-                int((self.reference_timestamp + DELTA) * 2 ** 32),
-                int((self.originate_timestamp + DELTA) * 2 ** 32),
-                int((self.receive_timestamp + DELTA) * 2 ** 32),
-                int((self.transmit_timestamp + DELTA) * 2 ** 32),
+                int((self.reference_timestamp + DELTA) * _LSB32),
+                int((self.originate_timestamp + DELTA) * _LSB32),
+                int((self.receive_timestamp + DELTA) * _LSB32),
+                int((self.transmit_timestamp + DELTA) * _LSB32),
             )
         except struct.error:
             raise NTPException("Invalid NTP packet fields.")
@@ -98,13 +100,13 @@ class Packet:
             stratum=raw[1],
             poll_interval=raw[2],
             precision=raw[3],
-            root_delay=raw[4] / 2 ** 16,
-            root_dispersion=raw[5] / 2 ** 16,
+            root_delay=raw[4] / _LSB16,
+            root_dispersion=raw[5] / _LSB16,
             reference_clock_id=raw[6],
-            reference_timestamp=raw[7] / 2 ** 32 - DELTA,
-            originate_timestamp=raw[8] / 2 ** 32 - DELTA,
-            receive_timestamp=raw[9] / 2 ** 32 - DELTA,
-            transmit_timestamp=raw[10] / 2 ** 32 - DELTA,
+            reference_timestamp=raw[7] / _LSB32 - DELTA,
+            originate_timestamp=raw[8] / _LSB32 - DELTA,
+            receive_timestamp=raw[9] / _LSB32 - DELTA,
+            transmit_timestamp=raw[10] / _LSB32 - DELTA,
         )
 
     @property
