@@ -11,6 +11,10 @@ Simple sans-io ntp client with couple backends:
 * python3.5+
 * `aiodns` (if you want absolute `asyncio` solution without extra threads)
 
+## Installation
+* sync: `python -m pip install siontp[requests]`
+* async: `python -m pip install siontp[aiohttp]`
+
 ## Usage
 Library is pretty similar to [`ntplib`](https://pypi.org/project/ntplib/), with exception, that packet timestamps are
 not in NTP timestamp format (epoch 1900 year), but in system timestamp (epoch 1970 for most systems).

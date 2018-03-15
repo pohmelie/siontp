@@ -28,5 +28,9 @@ setup(
     license="Apache 2",
     packages=find_packages(),
     install_requires=[],
+    extras_require={
+        "aiohttp": ["aiohttp"],
+        "requests": ["requests"],
+    },
     include_package_data=True,
 )
